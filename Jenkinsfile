@@ -1,45 +1,15 @@
 pipeline { 
-agent any 
+agent TestNode 
     stages { 
-        stage('Master-Build') { 
+	
+        stage('DownloadCode') { 
 
             steps {
-                echo "Hello Jenkins - Build"
+                git url: 'https://github.com/jmunuswa/azure-webapp.git',branch: 'master' 
             }
  
         }
-        stage('Master-Test') { 
 
-            steps {
-                echo "Hello Jenkins - Test"
-            }
-        
-        }
-        stage('Master-QA') { 
-            steps {
-                echo "Hello Jenkins - QA"
-            }
-        
-        }
-        stage('Master-Deploy') { 
-            steps {
-                echo "Hello Jenkins - Deploy"
-            }
-        
-        }
-        stage('Master-Monitor') { 
- 
-            steps {
-                echo "Hello Jenkins - Monitor"
-            }
-        }
-
-        stage('Master-Review') { 
- 
-            steps {
-                echo "Hello Jenkins - Review"
-            }
-        }
  
     }           
  }
