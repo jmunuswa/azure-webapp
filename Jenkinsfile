@@ -1,5 +1,5 @@
 pipeline { 
-agent { label 'TestNode' } TestNode 
+agent { label 'TestNode' }
     stages { 
 	
         stage('DownloadCode') { 
