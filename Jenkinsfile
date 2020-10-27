@@ -54,7 +54,7 @@ agent {label 'TestNode' }
 				 
 				 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
 				 {
-					sh "sudo docker login -u ${dockerHUBUser} -p ${dockerhubpwd}
+					sh "sudo docker login -u ${dockerHUBUser} -p ${dockerhubpwd}"
 				 }
 				 
 				 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
