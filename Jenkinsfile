@@ -28,7 +28,8 @@ agent {label 'TestNode' }
 
             steps {
                  
-				 echo "TestCode"
+				 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
+				 sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
             }
  
         }
