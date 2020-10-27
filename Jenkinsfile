@@ -1,5 +1,8 @@
 pipeline { 
 agent {label 'TestNode' }
+
+def buildNumber = BUILD_NUMBER
+def branchName = BRANCH_NAME
     stages { 
 	
         stage('DownloadCode') { 
@@ -9,7 +12,37 @@ agent {label 'TestNode' }
             }
  
         }
+		
+		stage('BuildCode') { 
 
+            steps {
+			
+				sh "docker build -t jmunuswa/CapStnPrj1-${branchName}"
+                
+            }
  
+        }
+		
+		
+		stage('TestCode') { 
+
+            steps {
+                 
+				 echo "TestCode"
+            }
+ 
+        }
+		
+		
+		stage('DeploytoPROD') { 
+
+            steps {
+			
+				echo "DeploytoPROD"
+                
+            }
+ 
+        }
+		 
     }           
  }
