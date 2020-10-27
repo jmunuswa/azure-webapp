@@ -18,7 +18,7 @@ agent {label 'TestNode' }
 
             steps {
 			
-				sh "docker build -t ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
+				sh "docker build -t ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME} ."
             }
  
         }
