@@ -1,8 +1,10 @@
 pipeline { 
 agent {label 'TestNode' }
-
-def buildNumber = BUILD_NUMBER
-def branchName = BRANCH_NAME
+	environment
+	{
+		def buildNumber = BUILD_NUMBER
+		def branchName = BRANCH_NAME
+	}
     stages { 
 	
         stage('DownloadCode') { 
