@@ -3,6 +3,7 @@ agent {label 'TestNode' }
 	environment
 	{
 		def dockerHUBUser = 'jmunuswa'
+		def registryCredential = 'dockerhub_id' 
 	}
     stages { 
 	
@@ -51,7 +52,12 @@ agent {label 'TestNode' }
 				 
 				 echo "****************************Uplaod docker image to Dockerhub - Begin *********************************************"
 				 
+				 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
+				 {
+					sh "sudo docker login -u ${dockerHUBUser} -p ${dockerhubpwd}
+				 }
 				 
+				 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 				 
 				 
 				 echo "****************************Uplaod docker image to Dockerhub - End *********************************************"
