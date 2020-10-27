@@ -2,8 +2,9 @@ pipeline {
 agent {label 'TestNode' }
 	environment
 	{
-		def buildNumber = BUILD_NUMBER
-		def branchName = BRANCH_NAME
+		def buildNumber = env.BUILD_NUMBER
+		def branchName = env.BRANCH_NAME
+		def dockerHUBUser = 'jmunuswa'
 	}
     stages { 
 	
@@ -19,7 +20,7 @@ agent {label 'TestNode' }
 
             steps {
 			
-				sh "docker build -t jmunuswa/CapStnPrj1-${branchName}"
+				sh "docker build -t ${dockerHUBUser}/CapStnPrj1-${branchName}"
                 
             }
  
