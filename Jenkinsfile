@@ -76,17 +76,19 @@ agent {label 'TestNode' }
 		
 		stage('DeploytoPROD') 
 		{ 
+			when 
+			{
+				branch "master"
+			}
 
             steps 
 			{
 			
-				when 
-				{
-					branch "master"
-				}
 			
 				node('ProdNode')
 				{
+				
+
 					 
 					 displayMessage("Run docker image in PROD - Begin")
 					 
