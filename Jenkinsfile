@@ -74,16 +74,13 @@ agent {label 'TestNode' }
 
 				node('ProdNode')
 				{
-					 displayMessage("Pull docker image from Dockerhub - Begin")
-					 
-					 
-					 
+					 displayMessage("Pull docker image from Dockerhub - Begin")			 
+					 					 
 					 
 					 displayMessage("Pull docker image from Dockerhub - End")
 					 
 					 displayMessage("Run docker image in PROD - Begin")
-					 
-					 
+					 				 
 					 
 					 
 					 displayMessage("Run docker image in PROD - End")
