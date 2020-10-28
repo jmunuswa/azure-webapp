@@ -80,7 +80,6 @@ agent {label 'TestNode' }
 					 displayMessage("Pull docker image from Dockerhub - End")
 					 
 					 displayMessage("Run docker image in PROD - Begin")
-					 				 
 					 
 					 
 					 displayMessage("Run docker image in PROD - End")
