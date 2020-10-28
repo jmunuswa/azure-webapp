@@ -54,7 +54,38 @@ pipeline
  
         }
 	 
-    }           
+    } 
+
+
+		stage('TestCode') 
+		{ 
+
+            steps 
+			{
+                 
+				 displayMessage("Run docker image and test using selenium - Begin")
+				 
+					 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
+					 sh "sudo docker run -d -p 81:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
+					 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
+					 sh "java -jar ${seleniumTestJar}"
+				 
+				 displayMessage("Run docker image and test using selenium - End")
+				 
+				 displayMessage("Uplaod docker image to Dockerhub - Begin")
+				 
+					 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
+					 {
+						sh "sudo docker login -u ${dockerHUBUser} -p ${dockerhubpwd}"
+					 }
+					 
+					 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
+				 				 
+				 displayMessage("Uplaod docker image to Dockerhub - End")
+				 
+            }
+ 
+        }	
  }
  
  
