@@ -1,5 +1,6 @@
-pipeline { 
-agent {label 'TestNode' }
+pipeline 
+{ 
+	agent {label 'TestNode' }
 	environment
 	{
 		def dockerHUBUser = 'jmunuswa'
@@ -38,27 +39,8 @@ agent {label 'TestNode' }
 					sh "sudo docker build -t ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME} ."
 				
 				displayMessage("Build Docker image - End")
-            }
- 
-        }
-		
-		
-		stage('TestCode') 
-		{ 
-
-            steps 
-			{
-                 
-				 displayMessage("Run docker image and test using selenium - Begin")
-				 
-					 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
-					 sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
-					 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
-					 sh "java -jar ${seleniumTestJar}"
-				 
-				 displayMessage("Run docker image and test using selenium - End")
-				 
-				 displayMessage("Uplaod docker image to Dockerhub - Begin")
+				
+				displayMessage("Uplaod docker image to Dockerhub - Begin")
 				 
 					 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
 					 {
@@ -68,41 +50,10 @@ agent {label 'TestNode' }
 					 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 				 				 
 				 displayMessage("Uplaod docker image to Dockerhub - End")
-				 
             }
  
         }
-		
-		
-		stage('DeploytoPROD') 
-		{ 
-			when 
-			{
-				branch "master"
-			}
-
-            steps 
-			{
-			
-			
-				node('ProdNode')
-				{
-				
-
-					 
-					 displayMessage("Run docker image in PROD - Begin")
-					 
-					 	sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
-						sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
-					 
-					 displayMessage("Run docker image in PROD - End")
-				}
-
-                
-            }
- 
-        }
-		 
+	 
     }           
  }
  
