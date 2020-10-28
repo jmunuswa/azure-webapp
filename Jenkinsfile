@@ -5,6 +5,8 @@ agent {label 'TestNode' }
 		def dockerHUBUser = 'jmunuswa'
 		def registryCredential = 'dockerhub_id' 
 		def seleniumTestJar = 'CapestonePrj1.jar'
+		def argServer = 'http://3.14.1.246/index.htm'
+		def argDriver = '/home/ubuntu/chromedriver'
 	}
     stages 
 	{ 
@@ -54,7 +56,7 @@ agent {label 'TestNode' }
 					 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
 					 sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 					 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
-					 sh "java -jar ${seleniumTestJar}"
+					 sh "java -jar ${seleniumTestJar} ${argServer} ${argDriver}"
 				 
 				 displayMessage("Run docker image and test using selenium - End")
 				 
