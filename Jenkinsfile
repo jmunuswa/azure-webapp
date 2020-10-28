@@ -14,11 +14,11 @@ agent {label 'TestNode' }
 				echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&[[[[[[RUN FROM : ${env.BRANCH_NAME}]]]]]]&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 			
 				
-				echo "****************************Download files from GitHub - Begin *********************************************"
+				displayMessage("Download files from GitHub - Begin")
 			
                 git url: 'https://github.com/jmunuswa/azure-webapp.git',branch: 'master' 
 				
-				echo "****************************Download files from GitHub - End *********************************************"
+				displayMessage("Download files from GitHub - End")
             }
  
         }
@@ -27,11 +27,11 @@ agent {label 'TestNode' }
 
             steps {
 			
-				echo "****************************Build Docker image - Begin *********************************************"
+				displayMessage("Build Docker image - Begin")
 				
 				sh "sudo docker build -t ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME} ."
 				
-				echo "****************************Build Docker image - End *********************************************"
+				displayMessage("Build Docker image - End")
             }
  
         }
@@ -41,16 +41,16 @@ agent {label 'TestNode' }
 
             steps {
                  
-				 echo "****************************Run docker image and test using selenium - Begin *********************************************"
+				 displayMessage("Run docker image and test using selenium - Begin")
 				 
 				 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
 				 sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 				 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
 				 sh "java -jar CapestonePrj1.jar"
 				 
-				 echo "****************************Run docker image and test using selenium - End *********************************************"
+				 displayMessage("Run docker image and test using selenium - End")
 				 
-				 echo "****************************Uplaod docker image to Dockerhub - Begin *********************************************"
+				 displayMessage("Uplaod docker image to Dockerhub - Begin")
 				 
 				 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
 				 {
@@ -60,7 +60,7 @@ agent {label 'TestNode' }
 				 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 				 
 				 
-				 echo "****************************Uplaod docker image to Dockerhub - End *********************************************"
+				 displayMessage("Uplaod docker image to Dockerhub - End")
 				 
             }
  
@@ -73,19 +73,19 @@ agent {label 'TestNode' }
 			
 
 
-				 echo "****************************Pull docker image from Dockerhub - Begin *********************************************"
+				 displayMessage("Pull docker image from Dockerhub - Begin")
 				 
 				 
 				 
 				 
-				 echo "****************************Pull docker image from Dockerhub - End *********************************************"
+				 displayMessage("Pull docker image from Dockerhub - End")
 				 
-				 echo "****************************Run docker image in PROD - Begin *********************************************"
-				 
-				 
+				 displayMessage("Run docker image in PROD - Begin")
 				 
 				 
-				 echo "****************************Run docker image in PROD - End *********************************************"
+				 
+				 
+				 displayMessage("Run docker image in PROD - End")
 
 
 
@@ -96,3 +96,8 @@ agent {label 'TestNode' }
 		 
     }           
  }
+ 
+ 
+ void displayMessage(String argMessage) {
+    echo "*******************************************[ ${argMessage} ]****************************************************"
+}
