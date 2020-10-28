@@ -4,32 +4,38 @@ agent {label 'TestNode' }
 	{
 		def dockerHUBUser = 'jmunuswa'
 		def registryCredential = 'dockerhub_id' 
+		def seleniumTestJar = 'CapestonePrj1.jar'
 	}
-    stages { 
+    stages 
+	{ 
 	
-        stage('DownloadCode') { 
+        stage('DownloadCode') 
+		{ 
 
-            steps {
+            steps 
+			{
 			
 				echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&[[[[[[RUN FROM : ${env.BRANCH_NAME}]]]]]]&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-			
-				
-				displayMessage("Download files from GitHub - Begin")
-			
-                git url: 'https://github.com/jmunuswa/azure-webapp.git',branch: 'master' 
-				
+
+
+					displayMessage("Download files from GitHub - Begin")
+
+					git url: 'https://github.com/jmunuswa/azure-webapp.git',branch: 'master' 
+
 				displayMessage("Download files from GitHub - End")
             }
  
         }
 		
-		stage('BuildCode') { 
+		stage('BuildCode') 
+		{ 
 
-            steps {
+            steps 
+			{
 			
 				displayMessage("Build Docker image - Begin")
 				
-				sh "sudo docker build -t ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME} ."
+					sh "sudo docker build -t ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME} ."
 				
 				displayMessage("Build Docker image - End")
             }
@@ -37,29 +43,30 @@ agent {label 'TestNode' }
         }
 		
 		
-		stage('TestCode') { 
+		stage('TestCode') 
+		{ 
 
-            steps {
+            steps 
+			{
                  
 				 displayMessage("Run docker image and test using selenium - Begin")
 				 
-				 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
-				 sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
-				 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
-				 sh "java -jar CapestonePrj1.jar"
+					 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
+					 sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
+					 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
+					 sh "java -jar ${seleniumTestJar}"
 				 
 				 displayMessage("Run docker image and test using selenium - End")
 				 
 				 displayMessage("Uplaod docker image to Dockerhub - Begin")
 				 
-				 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
-				 {
-					sh "sudo docker login -u ${dockerHUBUser} -p ${dockerhubpwd}"
-				 }
-				 
-				 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
-				 
-				 
+					 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) 
+					 {
+						sh "sudo docker login -u ${dockerHUBUser} -p ${dockerhubpwd}"
+					 }
+					 
+					 sh "sudo docker push ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
+				 				 
 				 displayMessage("Uplaod docker image to Dockerhub - End")
 				 
             }
@@ -67,23 +74,27 @@ agent {label 'TestNode' }
         }
 		
 		
-		stage('DeploytoPROD') { 
+		stage('DeploytoPROD') 
+		{ 
 
-            steps {
+            steps 
+			{
 			
-
+				when 
+				{
+					branch "master"
+				}
+			
 				node('ProdNode')
 				{
-					 displayMessage("Pull docker image from Dockerhub - Begin")			 
-					 					 
-					 
-					 displayMessage("Pull docker image from Dockerhub - End")
 					 
 					 displayMessage("Run docker image in PROD - Begin")
 					 
+					 	sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
+						sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 					 
 					 displayMessage("Run docker image in PROD - End")
-				 }
+				}
 
                 
             }
@@ -94,6 +105,7 @@ agent {label 'TestNode' }
  }
  
  
- void displayMessage(String argMessage) {
+ void displayMessage(String argMessage) 
+ {
     echo "*******************************************[[ ${argMessage} ]]****************************************************"
-}
+ }
