@@ -93,6 +93,7 @@ agent {label 'TestNode' }
 					 displayMessage("Run docker image in PROD - Begin")
 					 
 					 	sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
+						sh "sudo docker image pull ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 						sh "sudo docker run -d -p 80:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 					 
 					 displayMessage("Run docker image in PROD - End")
