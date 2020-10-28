@@ -53,10 +53,7 @@ pipeline
             }
  
         }
-	 
-    } 
-
-
+		
 		stage('TestCode') 
 		{ 
 
@@ -85,7 +82,10 @@ pipeline
 				 
             }
  
-        }	
+        }
+	 
+    } 
+	
  }
  
  
