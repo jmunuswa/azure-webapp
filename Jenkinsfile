@@ -6,7 +6,7 @@ pipeline
 		def dockerHUBUser = 'jmunuswa'
 		def registryCredential = 'dockerhub_id' 
 		def seleniumTestJar = 'CapestonePrj1.jar'
-		def argServer = 'http://3.14.1.246P:81/index.htm'
+		def argServer = 'http://3.14.1.246:81/index.htm'
 		def argDriver = '/home/ubuntu/chromedriver'
 	}
     stages 
