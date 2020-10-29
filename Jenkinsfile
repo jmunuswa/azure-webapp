@@ -57,7 +57,7 @@ pipeline
 					 sh "sudo docker rm -f capstnprj1-${env.BRANCH_NAME} || true"
 					 sh "sudo docker run -d -p 81:80 --name capstnprj1-${env.BRANCH_NAME}  ${dockerHUBUser}/capstnprj1-${env.BRANCH_NAME}"
 					 sh "cp ./CapestonePrj1.jar  /home/ubuntu"
-					 sh "java -jar ${seleniumTestJar} ${argServer} ${argDriver}"
+					 sh "java -jar ${seleniumTestJar} ${argServer} ${argDriver} L"
 				 
 				 displayMessage("Run docker image and test using selenium - End")
 				 
